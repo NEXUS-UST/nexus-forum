@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: nexus-forum
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: DATABASE_URL
+        value: postgresql://neondb_owner:npg_WwkCPa9YK3HI@ep-square-cake-aevxhoqm.us-east-2.aws.neon.tech/neondb?sslmode=require
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
