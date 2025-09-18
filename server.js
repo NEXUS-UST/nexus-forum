@@ -22,6 +22,13 @@ app.use(express.static('public'));
 // Initialize database
 async function initDB() {
   try {
+    console.log('Initializing database...');
+    console.log('Database URL:', process.env.DATABASE_URL ? 'Connected to Neon' : 'Using local DB');
+    
+    // Test connection
+    await pool.query('SELECT 1');
+    console.log('Database connection successful');
+    
     // Users table
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -113,6 +120,25 @@ async function initDB() {
     console.error('Database initialization error:', err);
   }
 }
+
+// Health check endpoint
+app.get('/api/health', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT COUNT(*) FROM categories');
+    res.json({ 
+      status: 'healthy',
+      database: 'connected',
+      categories: result.rows[0].count
+    });
+  } catch (err) {
+    res.json({ 
+      status: 'unhealthy',
+      database: 'error',
+      error: err.message,
+      stack: process.env.NODE_ENV !== 'production' ? err.stack : undefined
+    });
+  }
+});
 
 // Auth endpoints
 app.post('/api/register', async (req, res) => {
