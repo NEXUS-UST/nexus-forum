@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Community Forum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #5a5ec7;
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 4px 0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .category-item:hover {
+            background: #f3f4f6;
+        }
+
+        .category-item.active {
+            background: #ede9fe;
+            color: #667eea;
+        }
+
+        .category-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            border-radius: 4px;
+        }
+
+        .category-name {
+            font-weight: 500;
+        }
+
+        .category-count {
+            margin-left: auto;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .content-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Topic List */
+        .topic-list {
+            list-style: none;
+        }
+
+        .topic-item {
+            display: flex;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .topic-item:hover {
+            background: #f9fafb;
+        }
+
+        .topic-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 16px;
+            flex-shrink: 0;
+        }
+
+        .topic-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .topic-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .topic-meta {
+            font-size: 14px;
+            color: #6b7280;
+            display: flex;
+            gap: 16px;
+        }
+
+        .topic-category {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .topic-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            margin-left: 16px;
+        }
+
+        .topic-replies {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .topic-views {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 700px;
+            margin: 40px auto;
+            border-radius: 8px;
+            padding: 24px;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Stats */
+        .stats-bar {
+            background: #f9fafb;
+            padding: 16px 20px;
+            display: flex;
+            gap: 40px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .empty-description {
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="logo">Nexus Community</a>
+            <nav class="nav-links">
+                <a href="#" class="nav-link">Categories</a>
+                <a href="#" class="nav-link">Latest</a>
+                <a href="#" class="nav-link">Top</a>
+                <button class="btn-primary" onclick="showNewTopicModal()">New Topic</button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3 style="margin-bottom: 16px; font-size: 16px;">Categories</h3>
+            <ul class="category-list" id="categoryList">
+                <!-- Categories will be loaded here -->
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-item">
+                    <div class="stat-value" id="topicCount">0</div>
+                    <div class="stat-label">Topics</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="postCount">0</div>
+                    <div class="stat-label">Posts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="userCount">0</div>
+                    <div class="stat-label">Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="activeCount">0</div>
+                    <div class="stat-label">Active Now</div>
+                </div>
+            </div>
+
+            <div class="content-header">
+                <h2 class="content-title">Latest Topics</h2>
+                <select class="form-select" style="width: auto;" onchange="filterByCategory(this.value)">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+
+            <ul class="topic-list" id="topicList">
+                <li class="empty-state">
+                    <div class="empty-icon">💬</div>
+                    <h3 class="empty-title">No topics yet</h3>
+                    <p class="empty-description">Be the first to start a discussion!</p>
+                </li>
+            </ul>
+        </main>
+    </div>
+
+    <!-- New Topic Modal -->
+    <div id="newTopicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Topic</h2>
+                <button class="close-btn" onclick="hideNewTopicModal()">&times;</button>
+            </div>
+            <form id="newTopicForm">
+                <div class="form-group">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-input" id="topicTitle" required placeholder="What's on your mind?">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select" id="topicCategory" required>
+                        <option value="">Select a category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Content</label>
+                    <textarea class="form-textarea" id="topicContent" required placeholder="Share your thoughts..."></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button type="button" class="btn-primary" style="background: #9ca3af;" onclick="hideNewTopicModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Create Topic</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let categories = [];
+        let currentCategory = null;
+
+        // Load initial data
+        async function loadData() {
+            await Promise.all([
+                loadCategories(),
+                loadTopics(),
+                loadStats()
+            ]);
+        }
+
+        // Load categories
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`);
+                categories = await response.json();
+                
+                // Render category sidebar
+                const categoryList = document.getElementById('categoryList');
+                categoryList.innerHTML = categories.map(cat => `
+                    <li class="category-item ${!currentCategory ? 'active' : ''}" onclick="filterByCategory(null)">
+                        <div class="category-icon" style="background: #e5e7eb;"></div>
+                        <span class="category-name">All Categories</span>
+                        <span class="category-count">${categories.reduce((sum, c) => sum + parseInt(c.topic_count), 0)}</span>
+                    </li>
+                ` + categories.map(cat => `
+                    <li class="category-item ${currentCategory === cat.id ? 'active' : ''}" onclick="filterByCategory(${cat.id})">
+                        <div class="category-icon" style="background: ${cat.color};"></div>
+                        <span class="category-name">${cat.name}</span>
+                        <span class="category-count">${cat.topic_count || 0}</span>
+                    </li>
+                `).join('')).join('');
+
+                // Update category dropdowns
+                const categorySelects = document.querySelectorAll('select');
+                categorySelects.forEach(select => {
+                    if (select.id === 'topicCategory' || select.onchange) {
+                        const currentValue = select.value;
+                        select.innerHTML = '<option value="">All Categories</option>' + 
+                            categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+                        select.value = currentValue;
+                    }
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load topics
+        async function loadTopics() {
+            try {
+                const url = currentCategory 
+                    ? `${API_URL}/topics?category=${currentCategory}`
+                    : `${API_URL}/topics`;
+                
+                const response = await fetch(url);
+                const topics = await response.json();
+                
+                const topicList = document.getElementById('topicList');
+                
+                if (topics.length === 0) {
+                    topicList.innerHTML = `
+                        <li class="empty-state">
+                            <div class="empty-icon">💬</div>
+                            <h3 class="empty-title">No topics yet</h3>
+                            <p class="empty-description">Be the first to start a discussion!</p>
+                        </li>
+                    `;
+                    return;
+                }
+
+                topicList.innerHTML = topics.map(topic => {
+                    const category = categories.find(c => c.id === topic.category_id);
+                    const avatar = topic.username ? topic.username[0].toUpperCase() : 'U';
+                    const timeAgo = getTimeAgo(new Date(topic.created_at));
+                    
+                    return `
+                        <li class="topic-item" onclick="viewTopic(${topic.id})">
+                            <div class="topic-avatar">${avatar}</div>
+                            <div class="topic-content">
+                                <div class="topic-title">${topic.title}</div>
+                                <div class="topic-meta">
+                                    ${category ? `<span class="topic-category" style="background: ${category.color}20; color: ${category.color};">${category.name}</span>` : ''}
+                                    <span>${topic.username}</span>
+                                    <span>${timeAgo}</span>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="topic-replies">${topic.post_count || 0} replies</div>
+                                <div class="topic-views">${topic.views || 0} views</div>
+                            </div>
+                        </li>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading topics:', error);
+            }
+        }
+
+        // Load stats
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_URL}/stats`);
+                const stats = await response.json();
+                
+                document.getElementById('topicCount').textContent = stats.topic_count || 0;
+                document.getElementById('postCount').textContent = stats.post_count || 0;
+                document.getElementById('userCount').textContent = stats.user_count || 0;
+                document.getElementById('activeCount').textContent = stats.active_users || 0;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Filter by category
+        function filterByCategory(categoryId) {
+            currentCategory = categoryId ? parseInt(categoryId) : null;
+            loadCategories();
+            loadTopics();
+        }
+
+        // View topic
+        function viewTopic(topicId) {
+            // In a real app, this would navigate to the topic page
+            alert(`View topic ${topicId} - This would show the full discussion thread`);
+        }
+
+        // Modal functions
+        function showNewTopicModal() {
+            document.getElementById('newTopicModal').style.display = 'block';
+        }
+
+        function hideNewTopicModal() {
+            document.getElementById('newTopicModal').style.display = 'none';
+            document.getElementById('newTopicForm').reset();
+        }
+
+        // Handle new topic submission
+        document.getElementById('newTopicForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('topicTitle').value;
+            const category_id = document.getElementById('topicCategory').value;
+            const content = document.getElementById('topicContent').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/topics`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, category_id, content })
+                });
+                
+                if (response.ok) {
+                    hideNewTopicModal();
+                    loadTopics();
+                    loadStats();
+                } else {
+                    alert('Error creating topic. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error creating topic:', error);
+                alert('Error creating topic. Please try again.');
+            }
+        });
+
+        // Time ago helper
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            let interval = seconds / 31536000;
+            if (interval > 1) return Math.floor(interval) + ' years ago';
+            
+            interval = seconds / 2592000;
+            if (interval > 1) return Math.floor(interval) + ' months ago';
+            
+            interval = seconds / 86400;
+            if (interval > 1) return Math.floor(interval) + ' days ago';
+            
+            interval = seconds / 3600;
+            if (interval > 1) return Math.floor(interval) + ' hours ago';
+            
+            interval = seconds / 60;
+            if (interval > 1) return Math.floor(interval) + ' minutes ago';
+            
+            return Math.floor(seconds) + ' seconds ago';
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('newTopicModal');
+            if (event.target === modal) {
+                hideNewTopicModal();
+            }
+        }
+
+        // Load data on page load
+        loadData();
+        
+        // Refresh data every 30 seconds
+        setInterval(() => {
+            loadTopics();
+            loadStats();
+        }, 30000);
+    </script>
+</body>
+</html>
