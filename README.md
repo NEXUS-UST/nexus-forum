@@ -1,3 +1,10 @@
+> ## ⛔️ ARCHIVED — not maintained
+>
+> This repository is read-only. It is kept for reference and history.
+> NEXUS community forum. forum.ustnexus.club no longer resolves.
+>
+> Archived 2026-09-04.
+
 # Nexus Forum
 
 A modern, lightweight forum application for the Nexus Community.
