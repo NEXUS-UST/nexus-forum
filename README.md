@@ -1,35 +1,28 @@
 > ## ⛔️ ARCHIVED — not maintained
 >
 > This repository is read-only. It is kept for reference and history.
+>
 > NEXUS community forum. forum.ustnexus.club no longer resolves.
 >
 > Archived 2026-09-04.
 
-# Nexus Forum
+# nexus-forum
 
-A modern, lightweight forum application for the Nexus Community.
+**What it was:** NEXUS community forum. forum.ustnexus.club no longer resolves.
 
-## Features
-- 🚀 Fast and responsive
-- 💬 Real-time discussions
-- 🏷️ Category organization
-- 👤 User authentication
-- 🎨 Modern UI design
-- 📱 Mobile-friendly
+**Status:** archived 2026-09-04 · last push 2026-09-04 · HTML · no releases, no support. 
 
-## Quick Deploy to Render
+## Structure and layout
 
-1. Fork this repository
-2. Connect to Render
-3. Deploy with one click using the `render.yaml` configuration
+Top level as archived:
 
-## Environment Variables
-- `DATABASE_URL` - PostgreSQL connection string (Neon recommended)
-- `JWT_SECRET` - Secret key for authentication (auto-generated)
-- `NODE_ENV` - Set to "production"
+- `README.md`
+- `node_modules`/
+- `package-lock.json`
+- `package.json`
+- `public`/
+- `render.yaml`
+- `server-sqlite.js`
+- `server.js`
 
-## Local Development
-```bash
-npm install
-npm start
-```
+Nothing here is deployed or built; there is no install or usage path.
